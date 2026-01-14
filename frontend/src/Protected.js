@@ -1,9 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import DashboardContent from './pages/DashboardContent';
+import AppsPage from './pages/AppsPage';
+import ReportPage from './pages/ReportPage';
 
 function Protected() {
     const [user, setUser] = useState(null);
@@ -13,6 +15,7 @@ function Protected() {
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('token');
+            
             if (!token) {
                 navigate('/');
                 return;
@@ -62,7 +65,11 @@ function Protected() {
             <div className="main-content">
                 <Navbar user={user} onLogout={handleLogout} />
                 <div style={{ flex: 1, overflowY: 'auto' }}>
-                    <DashboardContent user={user} />
+                    <Routes>
+                        <Route path="/" element={<DashboardContent user={user} />} />
+                        <Route path="/apps" element={<AppsPage />} />
+                        <Route path="/reports" element={<ReportPage />} />
+                    </Routes>
                 </div>
             </div>
         </div>
